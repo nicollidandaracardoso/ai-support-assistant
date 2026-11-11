@@ -1,0 +1,7 @@
+# API e servidor local
+fastapi==0.136.1
+uvicorn==0.54.0
+pydantic==2.14.2
+
+# Testes automatizados (serão usados em uma etapa posterior)
+pytest==9.2.0

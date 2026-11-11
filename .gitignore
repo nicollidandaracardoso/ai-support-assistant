@@ -1,0 +1,27 @@
+# Ambiente virtual
+.venv/
+venv/
+env/
+ENV/
+
+# Python e testes
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Variáveis de ambiente e credenciais
+.env
+.env.*
+!.env.example
+
+# Banco vetorial local (será criado em etapa futura)
+chroma_db/
+data/chroma_db/
+
+# Configurações locais de editores e sistema operacional
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
