@@ -1,0 +1,9 @@
+RECUPERAÇÃO E REDEFINIÇÃO DE SENHA
+
+Se você esqueceu a senha do HelpDesk Nova, acesse a tela de login e selecione “Esqueci minha senha”. Informe o mesmo endereço de e-mail usado no cadastro e selecione “Enviar instruções”. O sistema enviará uma mensagem com um link temporário para criar uma nova senha.
+
+O link de redefinição expira em 30 minutos e só pode ser usado uma vez. Confira também as pastas de spam e promoções. Se a mensagem não chegar após alguns minutos, solicite um novo link. Pedir outro link invalida o anterior.
+
+Crie uma senha com pelo menos 12 caracteres, incluindo letras maiúsculas, minúsculas e números. O sistema também aceita símbolos. Não reutilize a senha de outros serviços e não compartilhe sua senha com colegas ou com o suporte. A equipe de suporte nunca precisa saber sua senha.
+
+Depois de salvar a nova senha, volte à tela de login e entre com o e-mail cadastrado e a senha recém-criada. Se você não tiver mais acesso ao e-mail da conta, não tente redefinir a senha usando outro endereço: peça à pessoa administradora da sua equipe para atualizar seu e-mail cadastrado.
