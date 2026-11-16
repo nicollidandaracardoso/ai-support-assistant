@@ -6,6 +6,7 @@ pydantic==2.14.2
 # Integração com embeddings do Gemini e carregamento local do arquivo .env
 google-genai==3.0.0
 python-dotenv==1.2.4
+chromadb==1.5.9
 
 # Testes automatizados (serão usados em uma etapa posterior)
 pytest==9.2.0
