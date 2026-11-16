@@ -41,6 +41,9 @@ class ChromaVectorStore:
 
         return [grouped[key] for key in sorted(grouped)]
 
+    def has_chunks(self) -> bool:
+        return self._collection.count() > 0
+
     def replace_documents(self, chunks_by_document: dict[str, list[Any]], embeddings_by_document: dict[str, list[list[float]]]) -> int:
         existing_ids = {item["document_id"] for item in self.list_documents()}
         incoming_ids = set(chunks_by_document)
@@ -83,6 +86,47 @@ class ChromaVectorStore:
         if deleted_count:
             self._collection.delete(where={"document_id": document_id})
         return deleted_count
+
+    def search(
+        self,
+        query_embedding: list[float],
+        top_k: int = 5,
+        category: str | None = None,
+    ) -> list[dict[str, Any]]:
+        if not self.has_chunks():
+            return []
+
+        filters = {"category": category} if category else None
+        response = self._collection.query(
+            query_embeddings=[query_embedding],
+            n_results=top_k,
+            where=filters,
+            include=["documents", "metadatas", "distances"],
+        )
+
+        ids = response["ids"][0]
+        documents = response["documents"][0] or []
+        metadatas = response["metadatas"][0] or []
+        distances = response["distances"][0] or []
+        results: list[dict[str, Any]] = []
+
+        for chunk_id, content, metadata, distance in zip(
+            ids, documents, metadatas, distances
+        ):
+            if metadata is None or content is None or distance is None:
+                continue
+            results.append(
+                {
+                    "chunk_id": chunk_id,
+                    "document_id": str(metadata["document_id"]),
+                    "source": str(metadata["source"]),
+                    "category": str(metadata["category"]),
+                    "chunk_index": int(metadata["chunk_index"]),
+                    "content": content,
+                    "distance": float(distance),
+                }
+            )
+        return results
 
 
 def group_chunks_by_document(chunks: list[Any]) -> dict[str, list[Any]]:

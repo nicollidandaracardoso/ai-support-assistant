@@ -7,6 +7,8 @@ from app.schemas import (
     DocumentsResponse,
     HealthResponse,
     IngestionResponse,
+    SearchRequest,
+    SearchResponse,
 )
 from app.vector_store import ChromaVectorStore, group_chunks_by_document
 
@@ -75,3 +77,31 @@ def delete_document(document_id: str) -> DeleteDocumentResponse:
     if deleted_count == 0:
         raise HTTPException(status_code=404, detail="Documento não encontrado na base vetorial.")
     return DeleteDocumentResponse(document_id=document_id, chunks_deleted=deleted_count)
+
+
+@app.post("/search", response_model=SearchResponse)
+def search_documents(request: SearchRequest) -> SearchResponse:
+    provider: EmbeddingProvider | None = None
+    try:
+        store = ChromaVectorStore()
+        if not store.has_chunks():
+            return SearchResponse(question=request.question, results=[], total=0)
+
+        provider = GeminiEmbeddingProvider()
+        query_embedding = provider.embed_query(request.question)
+        results = store.search(
+            query_embedding=query_embedding,
+            top_k=request.top_k,
+            category=request.category,
+        )
+        return SearchResponse(
+            question=request.question,
+            results=results,
+            total=len(results),
+        )
+    except Exception as error:
+        raise HTTPException(status_code=502, detail=f"Falha ao buscar documentos: {error}") from error
+    finally:
+        close = getattr(provider, "close", None)
+        if close is not None:
+            close()
